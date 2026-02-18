@@ -18,6 +18,7 @@ class CursoController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'estado' => 'required|in:active,draft,archived',
         ]);
 
         $curso = Curso::create($validated);

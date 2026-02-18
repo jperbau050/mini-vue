@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Importamos tus componentes
 import CursoList from './components/cursos/CursoList.vue';
 import EstudianteList from './components/estudiantes/EstudiantesList.vue';
 

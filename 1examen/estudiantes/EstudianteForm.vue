@@ -21,10 +21,15 @@
             v-for="curso in cursos" 
             :key="curso.id" 
             :value="curso.id"
+            :disabled="curso.estado !== 'active'"
           >
-            {{ curso.nombre }}
+            {{ curso.nombre }} 
+            {{ curso.estado !== 'active' ? `(${curso.estado.toUpperCase()})` : '✅' }}
           </option>
         </select>
+        <p class="helper-text">
+          Nota: Los cursos en <i>Draft</i> o <i>Archived</i> no aceptan inscripciones.
+        </p>
       </div>
 
       <div class="buttons">
@@ -70,7 +75,7 @@ const enviarFormulario = async () => {
       await axios.post('/api/estudiantes', estudiante.value);
     }
     limpiarFormulario();
-    emit('actualizar-lista');
+    emit('actualizar-lista'); // Esto refresca la tabla en el componente padre
     alert('¡Guardado con éxito!');
   } catch (error) {
     const msg = error.response?.data?.message || 'Error al guardar';
@@ -99,6 +104,8 @@ onMounted(cargarCursos);
 .field { margin-bottom: 12px; }
 label { display: block; font-weight: bold; margin-bottom: 5px; }
 input, select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+select:disabled { background-color: #f5f5f5; color: #999; }
+.helper-text { font-size: 0.8em; color: #7f8c8d; margin-top: 5px; }
 .btn-save { background: #2c3e50; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
 .btn-cancel { background: #95a5a6; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; margin-left: 10px; }
 </style>

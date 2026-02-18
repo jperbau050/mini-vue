@@ -1,6 +1,7 @@
+
 <template>
   <div class="form-container">
-    <h3>{{ cursoParaEditar ? 'Editar Curso' : 'Crear Nuevo Curso' }}</h3>
+    ### {{ cursoParaEditar ? 'Editar Curso' : 'Crear Nuevo Curso' }}
     
     <form @submit.prevent="enviarFormulario">
       <div class="field">
@@ -11,6 +12,15 @@
       <div class="field">
         <label>Descripción:</label>
         <textarea v-model="curso.descripcion" placeholder="Opcional"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Estado:</label>
+        <select v-model="curso.estado" class="select-estado">
+          <option value="draft">Borrador (Draft)</option>
+          <option value="active">Activo (Active)</option>
+          <option value="archived">Archivado (Archived)</option>
+        </select>
       </div>
 
       <div class="buttons">
@@ -35,20 +45,18 @@ const props = defineProps({
 
 const emit = defineEmits(['actualizar-lista', 'cancelar-edicion']);
 
-// Revertido: Eliminado el campo 'estado'
-const curso = ref({ nombre: '', descripcion: '' });
+// Inicializamos con 'draft' por defecto
+const curso = ref({ nombre: '', descripcion: '', estado: 'draft' });
 
 const limpiarFormulario = () => {
-  curso.value = { nombre: '', descripcion: '' };
+  curso.value = { nombre: '', descripcion: '', estado: 'draft' };
 };
 
 const enviarFormulario = async () => {
   try {
     if (props.cursoParaEditar) {
-      // EDITAR (PUT)
       await axios.put(`/api/cursos/${props.cursoParaEditar.id}`, curso.value);
     } else {
-      // CREAR (POST)
       await axios.post('/api/cursos', curso.value);
     }
     limpiarFormulario();
@@ -74,6 +82,8 @@ watch(() => props.cursoParaEditar, (newVal) => {
 </script>
 
 <style scoped>
+
+.select-estado { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background: white; }
 .form-container { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
 .field { margin-bottom: 10px; }
 input, textarea { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }

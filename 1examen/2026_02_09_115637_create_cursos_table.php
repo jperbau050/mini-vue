@@ -10,24 +10,17 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('estudiantes', function (Blueprint $table) {
+        Schema::create('cursos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email')->unique();
-
-            $table->foreignId('curso_id')
-                ->constrained('cursos')
-                ->onDelete('cascade'); 
-
+            $table->string('descripcion')->nullable();
+            $table->enum('estado', ['active', 'draft', 'archived'])->default('draft');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('estudiantes');
+        Schema::dropIfExists('cursos');
     }
 };

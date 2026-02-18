@@ -44,5 +44,13 @@ class EstudianteController extends Controller
 
         return response()->json(['mensaje' => 'Estudiante eliminado']);
     }
+    public function matricular(Request $request, Curso $curso)
+    {
+        if ($curso->estado !== 'active') {
+            return response()->json(['error' => 'Solo puedes matricularte en cursos activos.'], 403);
+        }
 
+        $curso->estudiantes()->attach($request->estudiante_id);
+        return response()->json(['message' => 'Matriculado con éxito']);
+    }
 }

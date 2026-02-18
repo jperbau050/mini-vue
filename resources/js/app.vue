@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-// Aquí no necesitas importar componentes, el router lo hará por ti
+
 </script>
 
 <style scoped>
